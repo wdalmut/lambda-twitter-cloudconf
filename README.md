@@ -1,4 +1,4 @@
-# Twitter -> Raspberry Pi -> Twitter engagement
+# Twitter -> Raspberry Pi -> AWS S3 -> AWS Lambda -> Twitter engagement
 
 A user tweet the CloudConf account, the Raspberry Pi take a picture and upload it
 on Amazon S3 and then AWS Lambda tweet it to the user!
