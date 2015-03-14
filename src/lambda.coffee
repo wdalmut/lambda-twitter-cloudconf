@@ -1,8 +1,8 @@
 console.log "loading event"
 
 aws = require 'aws-sdk'
-Twitter = require('twitter-js-client').Twitter
 s3 = new aws.S3 {apiVersion: '2006-03-01'}
+Twitter = require('twitter-js-client').Twitter
 request = require("request").defaults({ encoding: null })
 
 config = require '../config.json'
