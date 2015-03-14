@@ -27,6 +27,7 @@ module.exports = (grunt) ->
           archive: "lambda.zip"
         files: [
           {src: ['src/*.js']}
+          {src: ['config.json']}
           {src: [
             'node_modules/aws_sdk/**'
             'node_modules/request/**'
