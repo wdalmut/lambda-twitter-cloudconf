@@ -21,10 +21,26 @@ module.exports = (grunt) ->
           'src/twitter.js': ['src/*.coffee']
           'spec/twitter_spec.js': ['spec/*.coffee']
 
-  grunt.loadNpmTasks('grunt-contrib-watch')
-  grunt.loadNpmTasks('grunt-contrib-coffee')
-  grunt.loadNpmTasks('grunt-jasmine-node')
+    compress:
+      main:
+        options:
+          archive: "lambda.zip"
+        files: [
+          {src: ['src/*.js']}
+          {src: [
+            'node_modules/aws_sdk/**'
+            'node_modules/request/**'
+            'node_modules/q/**'
+            'node_modules/twitter-js-client/**'
+          ]}
+        ]
+
+  grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-jasmine-node'
+  grunt.loadNpmTasks 'grunt-contrib-compress'
 
 
-  grunt.registerTask('test', ['coffee', 'jasmine_node'])
-  grunt.registerTask('default', ['test'])
+  grunt.registerTask 'test', ['coffee', 'jasmine_node']
+  grunt.registerTask 'default', ['test']
+  grunt.registerTask 'dist', ['test', 'compress']

@@ -9,12 +9,15 @@ Compile it
 
 ```
 grunt
+
+# watch it
+grunt watch
 ```
 
-Create the Zip package
+Prepare the ZIP package for lambda
 
 ```
-zip -r --exclude=node_modules/grunt* w.zip src/twitter.js node_modules/ config.json
+grunt dist
 ```
 
 Upload the zip package to AWS Lambda
