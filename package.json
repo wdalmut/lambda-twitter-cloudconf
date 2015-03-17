@@ -1,7 +1,7 @@
 {
-  "name": "revgar-reader",
+  "name": "lambda-event-to-twitter",
   "version": "0.0.1",
-  "description": "explode excel files for revgar",
+  "description": "Tweet about an S3 event (image upload)!",
   "scripts": {
     "test": "grunt test"
   },
@@ -10,17 +10,22 @@
     "email": "walter.dalmut@gmail.com",
     "url": "http://walterdalmut.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wdalmut/lambda-twitter-cloudconf.git"
+  },
   "license": "MIT",
   "devDependencies": {
-    "grunt": "~0.4.5",
+    "grunt": "^0.4.5",
     "grunt-contrib-coffee": "~0.13.0",
     "grunt-contrib-compress": "^0.13.0",
     "grunt-contrib-watch": "~0.6.0",
-    "grunt-jasmine-node": "^0.2.1"
+    "grunt-jasmine-nodejs": "^1.0.2"
   },
   "dependencies": {
+    "q": "^1.2.0",
     "aws-sdk": "^2.1.16",
     "request": "^2.53.0",
-    "twitter-js-client": "0.0.5"
+    "twitter-js-client": "https://github.com/wdalmut/TwitterJSClient/archive/master.tar.gz"
   }
 }

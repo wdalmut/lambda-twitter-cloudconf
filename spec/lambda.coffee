@@ -43,15 +43,8 @@ describe "Lambda callback", ->
       ]
     }
 
-  it "should extract the tweet id and the user screen name", ->
-    me = new handler.Me
-    [userId, tweetId] = me.getUserFrom @event
-
-    expect(userId).toBe "walterdalmut"
-    expect(tweetId).toBe "1924762"
-
   it "should expose the lambda handler", ->
-    spyOn(handler, "handler").andReturn null
+    spyOn(handler, "handler").and.returnValue null
 
     handler.handler(@event, @context)
 
