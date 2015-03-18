@@ -21,7 +21,7 @@ exports.Me = class Me
       data = JSON.parse(data)
       console.log data.media_id_string
       twitter.postTweet {
-          status: "Hey @" + user + " here is your picture: http://example.walterdalmut.com/" + event.Records[0].s3.object.key
+          status: "Hey @" + user + " here is your picture: http://pic.2015.cloudconf.it/" + event.Records[0].s3.object.key
           media_ids: [data.media_id_string]
           in_reply_to_status_id: tweetId
         },
@@ -30,7 +30,7 @@ exports.Me = class Me
         () ->
           context.done null, ""
 
-    request.get "http://example.walterdalmut.com/" + event.Records[0].s3.object.key, (err, res, body) ->
+    request.get "http://pic.2015.cloudconf.it/" + event.Records[0].s3.object.key, (err, res, body) ->
       twitter.postMedia {
         media: body.toString "base64"
       }, uploadError, uploadOk
