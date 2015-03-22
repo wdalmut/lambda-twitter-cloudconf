@@ -1,6 +1,6 @@
 # Twitter -> Raspberry Pi -> AWS S3 -> AWS Lambda -> Twitter engagement
 
- * master [![Build Status](https://travis-ci.org/wdalmut/lambda-twitter-cloudconf.svg?branch=masterr)](https://travis-ci.org/wdalmut/lambda-twitter-cloudconf) 
+ * master [![Build Status](https://travis-ci.org/wdalmut/lambda-twitter-cloudconf.svg?branch=master)](https://travis-ci.org/wdalmut/lambda-twitter-cloudconf)
 
 A user tweet the CloudConf account, the Raspberry Pi take a picture and upload it
 on Amazon S3 and then AWS Lambda tweet it to the user!
