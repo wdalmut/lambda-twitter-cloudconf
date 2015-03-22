@@ -23,8 +23,9 @@
     "grunt-jasmine-nodejs": "^1.0.2"
   },
   "dependencies": {
-    "q": "^1.2.0",
     "aws-sdk": "^2.1.16",
+    "gm": "^1.17.0",
+    "q": "^1.2.0",
     "request": "^2.53.0",
     "twitter-js-client": "https://github.com/wdalmut/TwitterJSClient/archive/master.tar.gz"
   }
