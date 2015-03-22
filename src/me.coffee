@@ -12,7 +12,7 @@ exports.Me = class Me
     [user, tweetId] = @getTweetDataFrom event
     imageUrl = @getImageUrlFrom event
 
-    message = @messageBox.message()
+    message = @messageBox.messageFor user
 
     @uploadImageToTwitter(imageUrl)
     .then(

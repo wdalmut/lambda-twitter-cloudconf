@@ -1,12 +1,10 @@
 handler = require '../src/me'
 
 q = require 'q'
+Box = require('../src/message-box').Box
 
 describe "Twitter wrapper", ->
   beforeEach ->
-    @box = {}
-    @box.message = () -> "message"
-
     @event = {
       "Records": [
         {
@@ -44,6 +42,10 @@ describe "Twitter wrapper", ->
         }
       ]
     }
+
+    @box = new Box
+    spyOn(@box, "messageFor").and.returnValue "A message for user"
+
 
   it "should extract the tweet id and the user screen name", ->
     me = new handler.Me null, @box
@@ -109,17 +111,14 @@ describe "Twitter wrapper", ->
     tweet = q.defer()
     tweet.resolve "OK"
 
-    box = {}
-    box.message = () -> "Personal message"
-
-    me = new handler.Me {}, box
+    me = new handler.Me {}, @box
 
     spyOn(me, "uploadImageToTwitter").and.returnValue upload.promise
     spyOn(me, "replyWithData").and.returnValue tweet.promise
 
     me.tweetAbout(@event).then(() ->
       expect(me.uploadImageToTwitter).toHaveBeenCalledWith("http://example.walterdalmut.com/walterdalmut/1924762.jpg")
-      expect(me.replyWithData).toHaveBeenCalledWith("1924762", "Personal message", data)
+      expect(me.replyWithData).toHaveBeenCalledWith("1924762", "A message for user", data)
       done()
     )
 
