@@ -22,5 +22,5 @@ describe "The message box", ->
     spyOn(box, "at").and.returnValue 0
     message = box.messageFor "walterdalmut"
 
-    expect(message).toEqual "Hey, @walterdalmut here is your picture!"
+    expect(message).toEqual "Hey, @walterdalmut here is your picture"
 

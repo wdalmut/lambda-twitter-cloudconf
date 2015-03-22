@@ -25,7 +25,10 @@ module.exports = (grunt) ->
     coffee:
       compile:
         files:
-          'src/twitter.js': ['src/*.coffee']
+          'src/lambda.js': ['src/lambda.coffee']
+          'src/watermark.js': ['src/watermark.coffee']
+          'src/me.js': ['src/me.coffee']
+          'src/message-box.js': ['src/message-box.coffee']
           'spec/twitter_spec.js': ['spec/*.coffee']
 
     compress:

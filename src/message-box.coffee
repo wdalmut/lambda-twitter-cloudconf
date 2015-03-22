@@ -9,10 +9,10 @@ exports.Box = class Box
 
   messages: (user) ->
     [
-      "Hey, @#{user} here is your picture!"
-      "Hey, @#{user} check out your picture!"
-      "@#{user} just joined the cloud-side of the conference!"
-      "@#{user} -> Proud to be Cloud!"
+      "Hey, @#{user} here is your picture"
+      "Hey, @#{user} check out your picture"
+      "@#{user} just joined the cloud-side of the conference"
+      "@#{user} -> Proud to be Cloud"
     ]
 
   at: ->

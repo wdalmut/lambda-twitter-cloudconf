@@ -1,12 +1,14 @@
 config = require '../config.json'
 
 Me = require('./me').Me
-Box = require('./message-box').Box
 Twitter = require('twitter-js-client').Twitter
+Box = require('./message-box').Box
+Watermark = require('./watermark').Watermark
 
 box = new Box
 client = new Twitter config
-twitter = new Me client, box
+watermarker = new Watermark "./cloud.png"
+twitter = new Me client, box, watermarker
 
 exports.handler = (event, context) ->
   twitter.tweetAbout(event).then(
@@ -15,4 +17,3 @@ exports.handler = (event, context) ->
     (err) ->
       context.done err, "Unable to tweet!"
   )
-
