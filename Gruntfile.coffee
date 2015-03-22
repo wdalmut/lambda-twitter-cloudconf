@@ -9,11 +9,18 @@ module.exports = (grunt) ->
         files: '**/*.coffee'
         tasks: ['test']
 
-    jasmine_node:
+    jasmine_nodejs:
       options:
         coffee: true
-        includeStackTrace: false
-      all: ['spec/']
+        reporters:
+          console:
+            colors: true
+            cleanStack: true
+            verbose: false
+      all:
+        specs: [
+          "spec/**"
+        ]
 
     coffee:
       compile:
@@ -29,19 +36,20 @@ module.exports = (grunt) ->
           {src: ['src/*.js']}
           {src: ['config.json']}
           {src: [
+            'node_modules/q/**'
             'node_modules/aws_sdk/**'
             'node_modules/request/**'
-            'node_modules/q/**'
             'node_modules/twitter-js-client/**'
           ]}
         ]
 
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-jasmine-node'
+  grunt.loadNpmTasks 'grunt-jasmine-nodejs'
   grunt.loadNpmTasks 'grunt-contrib-compress'
 
 
-  grunt.registerTask 'test', ['coffee', 'jasmine_node']
+  grunt.registerTask 'test', ['coffee', 'jasmine_nodejs']
   grunt.registerTask 'default', ['test']
   grunt.registerTask 'dist', ['test', 'compress']
+
