@@ -4,7 +4,7 @@ request = require("request").defaults({ encoding: null })
 
 exports.Me = class Me
 
-  constructor: (@twitter) ->
+  constructor: (@twitter, @messageBox) ->
 
   tweetAbout: (event) ->
     dfd = q.defer()
@@ -12,7 +12,7 @@ exports.Me = class Me
     [user, tweetId] = @getTweetDataFrom event
     imageUrl = @getImageUrlFrom event
 
-    message = "Hey, @#{user} here is your picture: #{imageUrl}"
+    message = @messageBox.message()
 
     @uploadImageToTwitter(imageUrl)
     .then(

@@ -4,6 +4,9 @@ q = require 'q'
 
 describe "Twitter wrapper", ->
   beforeEach ->
+    @box = {}
+    @box.message = () -> "message"
+
     @event = {
       "Records": [
         {
@@ -43,14 +46,14 @@ describe "Twitter wrapper", ->
     }
 
   it "should extract the tweet id and the user screen name", ->
-    me = new handler.Me
+    me = new handler.Me null, @box
     [userId, tweetId] = me.getTweetDataFrom @event
 
     expect(userId).toBe "walterdalmut"
     expect(tweetId).toBe "1924762"
 
   it "should compose the right image url from the event", ->
-    me = new handler.Me
+    me = new handler.Me null, @box
     url = me.getImageUrlFrom @event
 
     expect(url).toEqual("http://example.walterdalmut.com/walterdalmut/1924762.jpg")
@@ -65,7 +68,7 @@ describe "Twitter wrapper", ->
     tweet = q.defer()
     tweet.resolve "OK"
 
-    me = new handler.Me {}
+    me = new handler.Me {}, @box
 
     spyOn(me, "uploadImageToTwitter").and.returnValue upload.promise
     spyOn(me, "replyWithData").and.returnValue tweet.promise
@@ -83,7 +86,7 @@ describe "Twitter wrapper", ->
     tweet = q.defer()
     tweet.resolve "OK"
 
-    me = new handler.Me {}
+    me = new handler.Me {}, @box
 
     spyOn(me, "uploadImageToTwitter").and.returnValue upload.promise
     spyOn(me, "replyWithData").and.returnValue tweet.promise
@@ -96,4 +99,27 @@ describe "Twitter wrapper", ->
         done()
     )
 
+  it "should reply to somebody with the message", (done) ->
+    data = {
+      media_id_string: "1234356746784359353"
+    }
+    upload = q.defer()
+    upload.resolve data
+
+    tweet = q.defer()
+    tweet.resolve "OK"
+
+    box = {}
+    box.message = () -> "Personal message"
+
+    me = new handler.Me {}, box
+
+    spyOn(me, "uploadImageToTwitter").and.returnValue upload.promise
+    spyOn(me, "replyWithData").and.returnValue tweet.promise
+
+    me.tweetAbout(@event).then(() ->
+      expect(me.uploadImageToTwitter).toHaveBeenCalledWith("http://example.walterdalmut.com/walterdalmut/1924762.jpg")
+      expect(me.replyWithData).toHaveBeenCalledWith("1924762", "Personal message", data)
+      done()
+    )
 
