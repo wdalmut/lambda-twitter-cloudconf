@@ -1,10 +1,9 @@
 q = require 'q'
 aws = require 'aws-sdk'
-request = require("request").defaults({ encoding: null })
 
 exports.Me = class Me
 
-  constructor: (@twitter, @messageBox) ->
+  constructor: (@twitter, @messageBox, @watermarker) ->
 
   tweetAbout: (event) ->
     dfd = q.defer()
@@ -14,8 +13,12 @@ exports.Me = class Me
 
     message = @messageBox.messageFor user
 
-    @uploadImageToTwitter(imageUrl)
-    .then(
+    @watermarker.prepare(imageUrl).toString().then(
+      (imageData) =>
+        @uploadImageToTwitter(imageData)
+      (err) ->
+        dfd.reject err
+    ).then(
       (data) =>
         @replyWithData tweetId, message, data
       (err) ->
@@ -29,20 +32,19 @@ exports.Me = class Me
 
     return dfd.promise
 
-  uploadImageToTwitter: (url) ->
+  uploadImageToTwitter: (body) ->
     dfd = q.defer()
 
-    request.get imageUrl , (err, res, body) ->
-      @twitter.postMedia(
-        {
-          media: body.toString "base64"
-        }
-        (err) ->
-          dfd.reject err
-        (data) ->
-          data = JSON.parse(data)
-          dfd.resolve data
-      )
+    @twitter.postMedia(
+      {
+        media: body
+      }
+      (err) ->
+        dfd.reject err
+      (data) ->
+        data = JSON.parse(data)
+        dfd.resolve data
+    )
 
     dfd.promise
 

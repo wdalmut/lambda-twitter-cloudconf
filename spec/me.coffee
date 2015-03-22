@@ -2,6 +2,7 @@ handler = require '../src/me'
 
 q = require 'q'
 Box = require('../src/message-box').Box
+Watermark = require('../src/watermark').Watermark
 
 describe "Twitter wrapper", ->
   beforeEach ->
@@ -46,16 +47,23 @@ describe "Twitter wrapper", ->
     @box = new Box
     spyOn(@box, "messageFor").and.returnValue "A message for user"
 
+    @watermarker = new Watermark "./cloud.png"
+
+    image = q.defer()
+    image.resolve "imagedata"
+
+    spyOn(@watermarker, "toString").and.returnValue image.promise
+
 
   it "should extract the tweet id and the user screen name", ->
-    me = new handler.Me null, @box
+    me = new handler.Me null, @box, @watermarker
     [userId, tweetId] = me.getTweetDataFrom @event
 
     expect(userId).toBe "walterdalmut"
     expect(tweetId).toBe "1924762"
 
   it "should compose the right image url from the event", ->
-    me = new handler.Me null, @box
+    me = new handler.Me null, @box, @watermarker
     url = me.getImageUrlFrom @event
 
     expect(url).toEqual("http://example.walterdalmut.com/walterdalmut/1924762.jpg")
@@ -70,7 +78,7 @@ describe "Twitter wrapper", ->
     tweet = q.defer()
     tweet.resolve "OK"
 
-    me = new handler.Me {}, @box
+    me = new handler.Me {}, @box, @watermarker
 
     spyOn(me, "uploadImageToTwitter").and.returnValue upload.promise
     spyOn(me, "replyWithData").and.returnValue tweet.promise
@@ -88,7 +96,7 @@ describe "Twitter wrapper", ->
     tweet = q.defer()
     tweet.resolve "OK"
 
-    me = new handler.Me {}, @box
+    me = new handler.Me {}, @box, @watermarker
 
     spyOn(me, "uploadImageToTwitter").and.returnValue upload.promise
     spyOn(me, "replyWithData").and.returnValue tweet.promise
@@ -111,13 +119,13 @@ describe "Twitter wrapper", ->
     tweet = q.defer()
     tweet.resolve "OK"
 
-    me = new handler.Me {}, @box
+    me = new handler.Me {}, @box, @watermarker
 
     spyOn(me, "uploadImageToTwitter").and.returnValue upload.promise
     spyOn(me, "replyWithData").and.returnValue tweet.promise
 
     me.tweetAbout(@event).then(() ->
-      expect(me.uploadImageToTwitter).toHaveBeenCalledWith("http://example.walterdalmut.com/walterdalmut/1924762.jpg")
+      expect(me.uploadImageToTwitter).toHaveBeenCalledWith("imagedata")
       expect(me.replyWithData).toHaveBeenCalledWith("1924762", "A message for user", data)
       done()
     )
